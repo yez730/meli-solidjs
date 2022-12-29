@@ -4,7 +4,7 @@ import type { Member, NewMember, Recharge ,Barber, NewBarber, UpdateInfo,Identit
 ,NewServiceType, ServiceType,Appointment, NewAppointment, Order,Merchant
 ,StatisticOrderType, StatisticRechargeRecordType} from "../types";
 
-const base = "http://127.0.0.1:3000" ;//process.env.API_BASE;
+const base = import.meta.env.VITE_API_BASE_URL;
 export async function loginByPassword(account:string,password:string): Promise<Res<Barber>> {
     const res = await fetch(`${base}/login`, {
         method: 'POST',

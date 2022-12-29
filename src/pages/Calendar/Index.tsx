@@ -134,7 +134,6 @@ const Index: Component = () => {
     <div class="w-full overflow-y-hidden p-2 h-screen bg-white">
         <div ref={elementRef!}></div>
     </div>
-    <div class="w-0 h-0 ec-event"></div>
 </div>
 
     );

@@ -1,9 +1,9 @@
-import { type Component, Suspense, createResource, For ,onMount, createSignal, createMemo, createEffect} from "solid-js";
+import { type Component, Suspense, createResource, For ,onMount, createSignal, createMemo, createEffect, createRenderEffect, on} from "solid-js";
 import { useNavigate,useSearchParams} from "@solidjs/router";
 import { getAppointments, getBarbers } from '../../utils/api';
 import moment from "moment";
 import { HiOutlineHeart } from 'solid-icons/hi';
-import { Calendar, type CalendarOptions,type EventInput } from "@fullcalendar/core";
+import { Calendar } from "@fullcalendar/core";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from '@fullcalendar/interaction'
 import cnLocale from '@fullcalendar/core/locales/zh-cn';
@@ -15,6 +15,11 @@ const Index: Component = () => {
 
     let elementRef: HTMLDivElement|undefined;
     let calendar:Calendar|undefined;
+    
+    createRenderEffect(on(()=>searchParams.barberId,()=>{
+        calendar?.refetchEvents();
+    }),);
+
     onMount(() => {
         calendar=new Calendar(elementRef!, {
             height:'100%',
@@ -27,7 +32,7 @@ const Index: Component = () => {
             initialView: "timeGridWeek",
             allDaySlot:false,
             locale: cnLocale,
-            dateClick:function (dateClickInfo){
+            dateClick:function (dateClickInfo){                
                 let path=`/appointment-add?currentDate=${encodeURIComponent(moment(dateClickInfo.dateStr).format('YYYY-MM-DDTHH:mm'))}`;
                 if (searchParams.barberId){
                     path+=`&barberId=${searchParams.barberId}`
@@ -77,21 +82,13 @@ const Index: Component = () => {
                 return  { html: eventHtml}
             },
             firstDay:1,
-            scrollTime: '09:00:00',
             views: {
                 timeGridWeek: { pointer: true },
             },
-            dayMaxEvents: true,
             nowIndicator: true,
-            eventStartEditable:true,
-            eventDurationEditable:true,
         });
         calendar.render();
     });
-
-    const refresh=()=>{
-        calendar?.refetchEvents();
-    }
 
     const addAppointment=()=>{
         let currentDate=moment().format('YYYY-MM-DDTHH:mm');
@@ -114,7 +111,6 @@ const Index: Component = () => {
             <HiOutlineHeart class="ml-2 w-6 h-6 stroke-slate-400" stroke-width={1.5}/>
             <select onChange={e=>{
                 setSearchParams({"barberId":e.currentTarget.value});
-                queueMicrotask(()=>refresh());
             }} class="rounded text-sm h-full w-full border-transparent focus:border-transparent focus:ring-0 appearance-none block
                 font-normal text-slate-500  
                 transition ease-in-out">

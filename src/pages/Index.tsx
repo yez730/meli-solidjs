@@ -1,10 +1,10 @@
-import { type Component, Suspense } from "solid-js";
+import { type Component } from "solid-js";
 import { IoCutOutline } from 'solid-icons/io';
 import {A} from "@solidjs/router";
 
 const Index: Component = () => {
     return (
-        <div class="min-h-screen bg-yellow-200">
+        <div class="min-h-screen">
     <div class="mx-auto max-w-4xl gap-60 flex flex-col">
         <div class="flex flex-row justify-between p-3">
             <div class="flex flex-row gap-2 items-center">

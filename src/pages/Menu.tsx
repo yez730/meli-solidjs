@@ -6,7 +6,6 @@ import { IoCutOutline } from 'solid-icons/io';
 import { HiOutlineX,HiOutlineChevronDown,HiOutlineChevronUp } from 'solid-icons/hi';
 
 const Menu: Component<{
-    isMenuShowButInSmallScreen:boolean,
     setIsMenuShowButInSmallScreen: (show: boolean) => void;
 }> = (props) => {
     const location = useLocation();

@@ -132,6 +132,7 @@ const ServiceTypeInfo: Component = () => {
         <div class="flex flex-col w-full gap-2">
           <span class="text-gray-700 ">预估时长（分钟）</span>
           <select onChange={e=>setEstimatedDuration(e.currentTarget.value as unknown as number)} class="w-full appearance-none blockbg-clip-padding bg-no-repeat border border-solid border-gray-500 rounded transition ease-in-out">
+            <option value=""></option>
             <For each={durationList}>{duration=>
             <option value={duration.value} selected={estimatedDuration()===duration.value}>
                 {duration.text}

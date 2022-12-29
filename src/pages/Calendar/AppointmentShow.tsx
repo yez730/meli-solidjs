@@ -10,13 +10,21 @@ const AppointmentShow: Component = () => {
     
     const navigate=useNavigate();
       const back=()=>{
-        navigate(`/calendar?viewType=${searchParams.viewType}&barberId=${searchParams.barberId}&currentDate=${searchParams.currentDate}`);
+        let path=`/calendar`;
+        if (searchParams.barberId){
+            path+=`?barberId=${searchParams.barberId}`
+        } 
+        navigate(path);
       }
     
       const goMember=(e:MouseEvent)=>{
         e.preventDefault();
-    
-        navigate(`/members?memberId=${appoinment()?.extendedProps.memberId}&fromCalendarShow=true`);
+        let path=`/members?memberId=${appoinment()?.extendedProps.memberId}&fromCalendarShow=true&id=${searchParams.id}`;
+        if (searchParams.barberId){
+          path+=`&barberId=${searchParams.barberId}`
+        } 
+        
+        navigate(path);
       }
       
     return (

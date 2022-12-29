@@ -39,9 +39,9 @@ const AppointmentAdd: Component = () => {
     }
 
     const back=()=>{
-        let path=`/calendar?viewType=${searchParams.viewType}&currentDate=${encodeURIComponent(searchParams.currentDate)}`;
+        let path=`/calendar`;
         if (searchParams.barberId){
-            path+=`&barberId=${searchParams.barberId}`
+            path+=`?barberId=${searchParams.barberId}`
         } 
         navigate(path);
     }
@@ -229,7 +229,7 @@ const AppointmentAdd: Component = () => {
                   <select disabled={!searchParams.serviceTypeId} onChange={e=>setSearchParams({"duration":e.currentTarget.value})} class=" disabled:bg-gray-100 lg:w-40 h-12 appearance-none blockbg-clip-padding bg-no-repeat border border-solid border-gray-500 rounded transition ease-in-out">
                     <Show when={searchParams.serviceTypeId}>
                         <For each={durationList}>{duration=>
-                         <option value={duration.value} selected={searchParams.duration as unknown as number===duration.value}>
+                         <option value={duration.value} selected={searchParams.duration === duration.value.toString()}>
                          {duration.text}
                        </option>
                         }</For>
@@ -245,6 +245,7 @@ const AppointmentAdd: Component = () => {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                   </svg>
                   <select onChange={e=>setSearchParams({"barberId":e.currentTarget.value})} class="rounded grow h-full w-full border-transparent focus:border-transparent focus:ring-0 appearance-none block transition ease-in-out">
+                    <option value=""></option>
                     <For each={barbars()}>{barber=>
                      <option value={barber.barberId} selected={searchParams.barberId===barber.barberId}>
                         {barber.realName}

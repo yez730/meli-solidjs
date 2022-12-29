@@ -1,16 +1,16 @@
 import { type Component, Suspense,onCleanup ,createSignal, Show, Switch, Match, createResource, onMount} from "solid-js";
-import {useNavigate,useSearchParams} from "@solidjs/router"
+import {useNavigate,useSearchParams,useLocation} from "@solidjs/router";
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from 'tailwind.config.js';
+import { getMember } from '../../../utils/api';
+import { HiOutlineMenu,HiOutlineX } from 'solid-icons/hi';
+import { FaSolidArrowLeftLong } from 'solid-icons/fa';
 
 import Menu from './Menu';
 import SideMember from './SideMember';
 import SideOrder from './SideOrder';
 import SideRechargeRecord from './SideRechargeRecord';
 import Recharge from './Recharge';
-
-import resolveConfig from 'tailwindcss/resolveConfig';
-import tailwindConfig from 'tailwind.config.js';
-import { getMember } from '../../../utils/api';
-import { HiSolidArrowNarrowLeft,HiOutlineMenu,HiOutlineX } from 'solid-icons/hi'
 
 const Index: Component = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -28,10 +28,13 @@ const Index: Component = () => {
     });
 
     const navigate=useNavigate();
-    
     const back=()=>{
         if (searchParams.fromCalendarShow){
-            navigate("/appointment-show?memberId="+searchParams.memberId);
+            let path=`/appointment-show?id=${searchParams.id}`;
+            if (searchParams.barberId){
+                path+=`&barberId=${searchParams.barberId}`
+            } 
+            navigate(path);
         } else {
             setSearchParams({
                 memberId:undefined,
@@ -59,7 +62,7 @@ const Index: Component = () => {
     <div class="fixed right-0 top-0 bottom-0 shadow-lg bg-white w-full lg:max-w-2xl flex flex-col">
         <div class="p-4 flex flex-row justify-between border-b">
             <button class="hover:bg-slate-300/40" onClick={back}>
-                <HiSolidArrowNarrowLeft class="w-10 h-10 stroke-slate-800 stroke-1"/>
+                <FaSolidArrowLeftLong class="w-8 h-8 stroke-slate-800 "/>
             </button>
 
             <Show when={isMenuShowButInSmallScreen()} fallback={

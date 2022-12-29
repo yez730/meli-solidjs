@@ -1,4 +1,4 @@
-import { type Component, onMount,createSignal, Show, For } from "solid-js";
+import { type Component, onMount,createSignal, Show } from "solid-js";
 import type { NewBarber} from '../../../types'
 import { getBarber, updateBarber,addBarber,deleteBarber } from '../../../utils/api';
 import {useSearchParams,useNavigate} from "@solidjs/router";

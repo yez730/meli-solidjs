@@ -21,6 +21,9 @@
     "vite-plugin-solid": "^2.3.0"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.0.2",
+    "@fullcalendar/interaction": "^6.0.2",
+    "@fullcalendar/timegrid": "^6.0.2",
     "@solidjs/router": "^0.5.1",
     "solid-icons": "^1.0.4",
     "solid-js": "^1.5.1",

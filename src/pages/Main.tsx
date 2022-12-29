@@ -1,4 +1,4 @@
-import { type Component, createSignal, Suspense ,Show, createResource} from "solid-js";
+import { type Component, createSignal ,Show, createResource} from "solid-js";
 import {A,Outlet,useNavigate} from "@solidjs/router";
 import {  getCurrentBarber,logout} from '../utils/api';
 import clickOutside from "../directives/clickOutside";
@@ -36,11 +36,11 @@ const Main: Component = () => {
     
     return (
         <Show when={!isMenuShowButInSmallScreen()} fallback={
-            <Menu isMenuShowButInSmallScreen={isMenuShowButInSmallScreen()} setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen}></Menu>
+            <Menu setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen}></Menu>
         }>
             <div class="flex flex-row"> 
                 <div class="hidden lg:block flex-none w-56 border-r">
-                    <Menu isMenuShowButInSmallScreen={isMenuShowButInSmallScreen()} setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen}></Menu>
+                    <Menu setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen}></Menu>
                 </div>
                 <div class="grow flex flex-col h-screen overflow-y-hidden bg-gray-100">                    
                     <div class="flex-none flex flex-row lg:justify-end justify-between bg-sky-400 items-center border-b-2 border-rose-600">

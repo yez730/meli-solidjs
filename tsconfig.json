@@ -14,5 +14,5 @@
     "strictNullChecks":true,
     "allowJs": true,
   },
-  "include": ["src", "vite-env.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx", "vite-env.d.ts"]
 }

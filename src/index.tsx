@@ -5,8 +5,11 @@ import { Router } from '@solidjs/router';
 
 import App from './App';
 
-render(() => (
+render(
+  () => (
     <Router>
-        <App />
+      <App />
     </Router>
-), document.body as HTMLElement);
+  ),
+  document.body as HTMLElement,
+);

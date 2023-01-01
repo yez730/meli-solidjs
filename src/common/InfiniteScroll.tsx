@@ -1,46 +1,43 @@
-import { type Component, onMount,onCleanup } from "solid-js";
+import { type Component, onMount, onCleanup } from 'solid-js';
 
 const InfiniteScroll: Component<{
-  elementScroll?:HTMLDivElement,
-  threshold:number,
-  hasMore:boolean,
-  loadMore:()=>void,
+  elementScroll?: HTMLDivElement;
+  threshold: number;
+  hasMore: boolean;
+  loadMore: () => void;
 }> = (props) => {
-    let component:HTMLDivElement | undefined; 
+  let component: HTMLDivElement | undefined;
 
-    onMount(()=>{
-      const element = props.elementScroll ? props.elementScroll : component!.parentNode;
+  const onScroll: (evt: Event) => void = (e) => {
+    const element = e.target as HTMLDivElement;
 
-      element?.addEventListener("scroll", onScroll);
-      element?.addEventListener("resize", onScroll);
-    });
+    const offset = element.scrollHeight - element.clientHeight - element.scrollTop;
 
     let isLoadMore = false;
+    if (offset <= props.threshold) {
+      if (!isLoadMore && props.hasMore) {
+        props.loadMore();
+      }
+      isLoadMore = true;
+    } else {
+      isLoadMore = false;
+    }
+  };
 
-    const onScroll:(evt: Event)=> void = e => {
-        const element = e.target as HTMLDivElement;
-        
-        const offset = element.scrollHeight - element.clientHeight - element.scrollTop;
-        
-        if (offset <= props.threshold) {
-          if (!isLoadMore && props.hasMore) {
-            props.loadMore();
-          }
-          isLoadMore = true;
-        } else {
-          isLoadMore = false;
-        }
-      };
-    
-      onCleanup(() => {
-        const element = props.elementScroll ? props.elementScroll : component!.parentNode;
-  
-        element?.removeEventListener("scroll", onScroll);
-        element?.removeEventListener("resize", onScroll);
-      });
+  onMount(() => {
+    const element = props.elementScroll ? props.elementScroll : component!.parentNode;
 
-    return (
-        <div ref={component!} class="w-0 h-0" />
-    );
+    element?.addEventListener('scroll', onScroll);
+    element?.addEventListener('resize', onScroll);
+  });
+
+  onCleanup(() => {
+    const element = props.elementScroll ? props.elementScroll : component!.parentNode;
+
+    element?.removeEventListener('scroll', onScroll);
+    element?.removeEventListener('resize', onScroll);
+  });
+
+  return <div ref={component!} class="w-0 h-0" />;
 };
 export default InfiniteScroll;

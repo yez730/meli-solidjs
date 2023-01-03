@@ -19,7 +19,7 @@ const MemberDropdown: Component<{
   const [page, setPage] = createSignal(0);
   const pageSize = 30;
 
-  const [newBatch, { refetch }] = createResource(page, async (p: number) =>
+  const [newBatch, { mutate, refetch }] = createResource(page, async (p: number) =>
     getMembers(p, pageSize, props.search, ''),
   );
 
@@ -30,6 +30,7 @@ const MemberDropdown: Component<{
       () => props.search,
       () => {
         data = [];
+        mutate({ totalCount: 0, data: [] });
 
         if (page() === 0) {
           refetch();

@@ -160,10 +160,10 @@ const AppointmentAdd: Component = () => {
               <MemberLargeDropdownSide
                 amount={
                   searchParams.memberId
-                    ? (searchParams.memberPrize as unknown as number)
-                    : (searchParams.normalPrize as unknown as number)
+                    ? (searchParams.memberPrize as unknown as number) ?? 0
+                    : (searchParams.normalPrize as unknown as number) ?? 0
                 }
-                duration={searchParams.duration as unknown as number}
+                duration={(searchParams.duration as unknown as number) ?? 0}
                 memberId={searchParams.memberId}
                 realName={decodeURIComponent(searchParams.memberName ?? '')}
                 setBinding={(id, name) => {
@@ -413,16 +413,16 @@ const AppointmentAdd: Component = () => {
             <span class="text-lg">
               总金额：
               {searchParams.memberId
-                ? (searchParams.memberPrize as unknown as number)
-                : (searchParams.normalPrize as unknown as number)}
+                ? (searchParams.memberPrize as unknown as number) ?? 0
+                : (searchParams.normalPrize as unknown as number) ?? 0}
               ￥（
-              {Math.trunc((searchParams.duration as unknown as number) / 60) > 0
-                ? `${Math.trunc((searchParams.duration as unknown as number) / 60)} 小时${
-                    (searchParams.duration as unknown as number) % 60 === 0
+              {Math.trunc(((searchParams.duration as unknown as number) ?? 0) / 60) > 0
+                ? `${Math.trunc(((searchParams.duration as unknown as number) ?? 0) / 60)} 小时${
+                    ((searchParams.duration as unknown as number) ?? 0) % 60 === 0
                       ? ''
-                      : `${(` ${searchParams.duration}` as unknown as number) % 60}分钟`
+                      : `${((` ${searchParams.duration}` as unknown as number) ?? 0) % 60}分钟`
                   }`
-                : `${(searchParams.duration as unknown as number) % 60} 分钟`}
+                : `${((searchParams.duration as unknown as number) ?? 0) % 60} 分钟`}
               ）
             </span>
             <button

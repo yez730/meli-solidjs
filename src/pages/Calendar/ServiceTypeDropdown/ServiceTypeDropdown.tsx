@@ -24,7 +24,7 @@ const ServiceTypeDropdown: Component<{
 }> = (props) => {
   const [page, setPage] = createSignal(0);
   const pageSize = 30;
-  const [newBatch, { refetch }] = createResource(page, async (p: number) =>
+  const [newBatch, { mutate, refetch }] = createResource(page, async (p: number) =>
     getServiceTypes(p, pageSize, props.search),
   );
 
@@ -35,6 +35,7 @@ const ServiceTypeDropdown: Component<{
       () => props.search,
       () => {
         data = [];
+        mutate({ totalCount: 0, data: [] });
 
         if (page() === 0) {
           refetch();

@@ -1,13 +1,11 @@
 import {
   type Component,
-  Suspense,
   createSignal,
   createResource,
   Show,
   For,
   createEffect,
   on,
-  useTransition,
 } from 'solid-js';
 import InfiniteScroll from '../../../common/InfiniteScroll';
 import { getMembers } from '../../../utils/api';
@@ -21,14 +19,11 @@ const MemberDropdown: Component<{
   const [page, setPage] = createSignal(0);
   const pageSize = 30;
 
-  const [newBatch, { refetch }] = createResource(
-    page,
-    async (p: number) => (await getMembers(p, pageSize, props.search, '')).data,
+  const [newBatch, { refetch }] = createResource(page, async (p: number) =>
+    getMembers(p, pageSize, props.search, ''),
   );
 
   let data: Member[] = [];
-
-  const [pending, start] = useTransition();
 
   createEffect(
     on(
@@ -37,9 +32,9 @@ const MemberDropdown: Component<{
         data = [];
 
         if (page() === 0) {
-          start(() => refetch());
+          refetch();
         } else {
-          start(() => setPage(0));
+          setPage(0);
         }
 
         props.scrollElement?.scroll(0, 0);
@@ -48,47 +43,45 @@ const MemberDropdown: Component<{
   );
 
   const allData = () => {
-    data = [...data, ...(newBatch() ?? [])];
+    data = [...data, ...(newBatch()?.data ?? [])];
     return data;
   };
 
   return (
-    <Suspense
-      fallback={
-        // pending for eslint
-        <p class="p-3 text-sm text-slate-400 text-center" classList={{ pending: pending() }}>
-          加载中...
-        </p>
-      }
-    >
+    <>
+      <ul class="py-1 text-gray-700">
+        <For each={allData()}>
+          {(member) => (
+            <li
+              onClick={() => {
+                props.handleSelected(member.memberId, member.realName ?? '');
+              }}
+            >
+              <div class="cursor-pointer flex flex-row justify-between items-center p-3 hover:bg-gray-100 ">
+                <span>{member.realName}</span>
+                <span class="text-sm text-slate-400 ">{member.cellphone}</span>
+              </div>
+            </li>
+          )}
+        </For>
+        <InfiniteScroll
+          elementScroll={props.scrollElement}
+          hasMore={pageSize * (page() + 1) < (newBatch()?.totalCount ?? 0)}
+          threshold={100}
+          loadMore={() => setPage((p) => p + 1)}
+        />
+      </ul>
       <Show
-        when={allData()!.length > 0}
-        fallback={<p class="p-3 text-sm text-slate-400 text-center">暂无数据</p>}
+        when={newBatch.loading}
+        fallback={
+          <Show when={(newBatch()?.totalCount ?? 0) === 0}>
+            <p class="py-3 border-none text-sm text-slate-400 text-center">暂无数据</p>
+          </Show>
+        }
       >
-        <ul class="py-1 text-gray-700">
-          <For each={allData()!}>
-            {(member) => (
-              <li
-                onClick={() => {
-                  props.handleSelected(member.memberId, member.realName ?? '');
-                }}
-              >
-                <div class="cursor-pointer flex flex-row justify-between items-center p-3 hover:bg-gray-100 ">
-                  <span>{member.realName}</span>
-                  <span class="text-sm text-slate-400 ">{member.cellphone}</span>
-                </div>
-              </li>
-            )}
-          </For>
-          <InfiniteScroll
-            elementScroll={props.scrollElement}
-            hasMore={newBatch()!.length > 0}
-            threshold={100}
-            loadMore={() => start(() => setPage((p) => p + 1))}
-          />
-        </ul>
+        <p class="py-3 border-none text-sm text-slate-400 text-center">加载中...</p>
       </Show>
-    </Suspense>
+    </>
   );
 };
 

@@ -7,20 +7,19 @@ const InfiniteScroll: Component<{
   loadMore: () => void;
 }> = (props) => {
   let component: HTMLDivElement | undefined;
+  let hasLoadedMore = false;
 
   const onScroll: (evt: Event) => void = (e) => {
     const element = e.target as HTMLDivElement;
-
     const offset = element.scrollHeight - element.clientHeight - element.scrollTop;
 
-    let isLoadMore = false;
     if (offset <= props.threshold) {
-      if (!isLoadMore && props.hasMore) {
+      if (props.hasMore && !hasLoadedMore) {
         props.loadMore();
       }
-      isLoadMore = true;
+      hasLoadedMore = true;
     } else {
-      isLoadMore = false;
+      hasLoadedMore = false;
     }
   };
 

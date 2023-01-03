@@ -28,7 +28,9 @@ const Index: Component = () => {
   const [showRecharge, setShowRecharge] = createSignal(false);
   const [lastRechargeTime, setLastRechargeTime] = createSignal<number | undefined>(); // 充值记录时刷新
 
-  const [member, { refetch }] = createResource(async () => getMember(searchParams.memberId));
+  const [member, { refetch }] = createResource(async () => {
+    return getMember(searchParams.memberId);
+  });
 
   window
     .matchMedia(`(min-width: ${(resolveConfig(tailwindConfig) as any).theme!.screens?.lg})`)
@@ -112,10 +114,10 @@ const Index: Component = () => {
               <div class="flex flex-col border-r lg:w-48">
                 <div class="flex flex-col border-b py-2">
                   <div class="flex flex-row justify-center">
-                    <span class="text-lg font-semibold">{member()?.realName ?? ' &nbsp;'}</span>
+                    <span class="text-lg font-semibold">{member()?.realName ?? '...'}</span>
                   </div>
                   <div class="flex flex-row justify-center">
-                    <span class="text-sm">{member()?.cellphone ?? ' &nbsp;'}</span>
+                    <span class="text-sm">{member()?.cellphone ?? '...'}</span>
                   </div>
                   <div class="flex flex-row justify-center gap-2 p-2">
                     <button

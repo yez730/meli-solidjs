@@ -96,7 +96,7 @@ const Menu: Component<{
                     >
                       {(menuItem) => (
                         <A
-                          class="text-gray-700 text-sm break-words flex flex-row items-center ml-8 p-2 rounded-lg gap-2"
+                          class="text-gray-700 text-sm break-words flex flex-row items-center pl-8 p-2 rounded-lg gap-2"
                           classList={{
                             'hover:bg-gray-200': location.pathname !== menuItem.path,
                             'bg-gray-200': location.pathname === menuItem.path,

@@ -7,7 +7,7 @@ import {
   For,
   createEffect,
   on,
-  createMemo,
+  useTransition,
 } from 'solid-js';
 import InfiniteScroll from '../../../common/InfiniteScroll';
 import { getServiceTypes } from '../../../utils/api';
@@ -26,12 +26,13 @@ const ServiceTypeDropdown: Component<{
 }> = (props) => {
   const [page, setPage] = createSignal(0);
   const pageSize = 30;
-  const [newBatch, { refetch }] = createResource(
-    page,
-    async (p: number) => (await getServiceTypes(p, pageSize, props.search)).data,
-  );
+  const [newBatch, { refetch }] = createResource(page, async (p: number) => {
+    return (await getServiceTypes(p, pageSize, props.search)).data;
+  });
 
   let data: ServiceType[] = [];
+
+  const [pending, start] = useTransition();
 
   createEffect(
     on(
@@ -40,9 +41,9 @@ const ServiceTypeDropdown: Component<{
         data = [];
 
         if (page() === 0) {
-          refetch();
+          start(() => refetch());
         } else {
-          setPage(0);
+          start(() => setPage(0));
         }
 
         props.scrollElement?.scroll(0, 0);
@@ -50,19 +51,26 @@ const ServiceTypeDropdown: Component<{
     ),
   );
 
-  const allData = createMemo(() => {
+  const allData = () => {
     data = [...data, ...(newBatch() ?? [])];
     return data;
-  });
+  };
 
   return (
-    <Suspense fallback={<p class="p-3 text-sm text-slate-400 text-center">加载中</p>}>
+    <Suspense
+      fallback={
+        // pending for eslint
+        <p class="p-3 text-sm text-slate-400 text-center" classList={{ pending: pending() }}>
+          加载中...
+        </p>
+      }
+    >
       <Show
-        when={allData().length > 0}
+        when={allData()!.length > 0}
         fallback={<p class="p-3 text-sm text-slate-400 text-center">暂无数据</p>}
       >
         <ul class="py-1 text-gray-700">
-          <For each={allData()}>
+          <For each={allData()!}>
             {(serviceType) => (
               <li
                 onClick={() => {
@@ -99,7 +107,7 @@ const ServiceTypeDropdown: Component<{
             elementScroll={props.scrollElement}
             hasMore={newBatch()!.length > 0}
             threshold={100}
-            loadMore={() => setPage((p) => p + 1)}
+            loadMore={() => start(() => setPage((p) => p + 1))}
           />
         </ul>
       </Show>

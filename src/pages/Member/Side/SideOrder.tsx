@@ -5,7 +5,7 @@ import {
   createResource,
   Show,
   For,
-  createMemo,
+  useTransition,
 } from 'solid-js';
 import InfiniteScroll from '../../../common/InfiniteScroll';
 import { getOrdersByMemberId } from '../../../utils/api';
@@ -21,10 +21,12 @@ const SideOrder: Component<{ memberId: string }> = (props) => {
 
   let data: StatisticOrderType[] = [];
 
-  const allData = createMemo(() => {
+  const [pending, start] = useTransition();
+
+  const allData = () => {
     data = [...data, ...(newBatch() ?? [])];
     return data;
-  });
+  };
 
   return (
     <div class="h-full flex flex-col">
@@ -32,12 +34,19 @@ const SideOrder: Component<{ memberId: string }> = (props) => {
         <span class="text-xl font-semibold">消费记录</span>
       </div>
       <div class="grow h-full overflow-y-auto flex flex-col gap-4 mt-4">
-        <Suspense fallback={<p class="p-3 text-sm text-slate-400 text-center">加载中</p>}>
+        <Suspense
+          fallback={
+            // pending for eslint
+            <p class="p-3 text-sm text-slate-400 text-center" classList={{ pending: pending() }}>
+              加载中...
+            </p>
+          }
+        >
           <Show
-            when={allData().length > 0}
+            when={allData()!.length > 0}
             fallback={<p class="p-3 text-sm text-slate-400 text-center">暂无数据</p>}
           >
-            <For each={allData()}>
+            <For each={allData()!}>
               {(row) => (
                 <div class="flex flex-col gap-2 mx-2 sm:mx-8">
                   <div class="rounded-md border bg-white flex flex-col p-4 gap-2">
@@ -73,7 +82,7 @@ const SideOrder: Component<{ memberId: string }> = (props) => {
             <InfiniteScroll
               hasMore={newBatch()!.length > 0}
               threshold={100}
-              loadMore={() => setPage((p) => p + 1)}
+              loadMore={() => start(() => setPage((p) => p + 1))}
             />
           </Show>
         </Suspense>

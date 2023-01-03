@@ -13,11 +13,11 @@ const SideMember: Component<{
           <div class="flex flex-col sm:flex-row justify-between gap-2">
             <div class="flex flex-col w-full gap-1">
               <span class="text-gray-600 ">姓名</span>
-              <span>{props.member?.realName ?? '&nbsp;'}</span>
+              <span>{props.member?.realName ?? '...'}</span>
             </div>
             <div class="flex flex-col w-full gap-1">
               <span class="text-gray-700 ">手机号</span>
-              <span>{props.member?.cellphone ?? ' &nbsp;'}</span>
+              <span>{props.member?.cellphone ?? '...'}</span>
             </div>
           </div>
           <div class="flex flex-col sm:flex-row  justify-between gap-2">
@@ -33,17 +33,17 @@ const SideMember: Component<{
           <div class="flex flex-col sm:flex-row  justify-between gap-2">
             <div class="flex flex-col w-full gap-1">
               <span class="text-gray-700">余额</span>
-              <span>{props.member?.balance ?? ' &nbsp;'}￥</span>
+              <span>{props.member?.balance ?? '...'}￥</span>
             </div>
           </div>
           <div class="flex flex-col sm:flex-row  justify-between gap-2">
             <div class="flex flex-col w-full gap-1">
               <span class="text-gray-700">创建时间</span>
-              <span>{props.member?.createTime ?? ' &nbsp;'}</span>
+              <span>{props.member?.createTime ?? '...'}</span>
             </div>
             <div class="flex flex-col w-full gap-1">
               <span class="text-gray-700">上次修改时间</span>
-              <span>{props.member?.updateTime ?? ' &nbsp;'}</span>
+              <span>{props.member?.updateTime ?? '...'}</span>
             </div>
           </div>
         </div>

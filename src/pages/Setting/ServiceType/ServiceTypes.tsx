@@ -1,5 +1,5 @@
 import { type Component, createResource, Show, For, Suspense } from 'solid-js';
-import { useSearchParams, useNavigate } from '@solidjs/router';
+import { useSearchParams, useNavigate, useLocation } from '@solidjs/router';
 import {
   HiOutlineX,
   HiOutlineSearch,
@@ -9,6 +9,8 @@ import {
 import { getServiceTypes } from '../../../utils/api';
 
 const ServiceTypes: Component = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
 
   let inputSearch: HTMLInputElement | undefined;
@@ -28,10 +30,8 @@ const ServiceTypes: Component = () => {
     },
   );
 
-  const navigate = useNavigate();
   const addService = () => {
-    // TODO with state?
-    navigate('/service-type-info'); // ?currentPage="+(searchParams.currentPage??0)
+    navigate('/service-type-info');
   };
 
   const closeSearch = () => {
@@ -40,7 +40,14 @@ const ServiceTypes: Component = () => {
   };
 
   const goToServiceTypeInfo = (serviceTypeId: string) => {
-    navigate(`/service-type-info?serviceTypeId=${serviceTypeId}`); // TODO keep currentPage/pageSize/search
+    let path = '/service-type-info';
+    if (location.search) {
+      path += `${location.search}&serviceTypeId=${serviceTypeId}`;
+    } else {
+      path += `?serviceTypeId=${serviceTypeId}`;
+    }
+
+    navigate(path);
   };
 
   return (
@@ -127,6 +134,7 @@ const ServiceTypes: Component = () => {
               </tbody>
             </table>
           </div>
+
           <Show when={serviceTypesResult()?.totalCount! > 0}>
             <div class="flex flex-row gap-2 justify-center py-2">
               <Show when={Number((searchParams.currentPage as unknown as number) ?? 0) > 0}>
@@ -143,7 +151,7 @@ const ServiceTypes: Component = () => {
               </Show>
               <Show
                 when={
-                  (Number(searchParams.currentPage as unknown as number) ?? 0) *
+                  (Number((searchParams.currentPage as unknown as number) ?? 0) + 1) *
                     Number((searchParams.pageSize as unknown as number) ?? 20) <
                   serviceTypesResult()?.totalCount!
                 }

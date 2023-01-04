@@ -8,7 +8,7 @@ import {
   createResource,
   onMount,
 } from 'solid-js';
-import { useNavigate, useSearchParams } from '@solidjs/router';
+import { useLocation, useNavigate, useSearchParams } from '@solidjs/router';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from 'tailwind.config.js';
 import { HiOutlineMenu, HiOutlineX } from 'solid-icons/hi';
@@ -21,12 +21,16 @@ import SideOrder from './SideOrder';
 import SideRechargeRecord from './SideRechargeRecord';
 import Recharge from './Recharge';
 
-const Index: Component = () => {
+const Index: Component<{
+  reloadMemers: () => void;
+}> = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isMenuShowButInSmallScreen, setIsMenuShowButInSmallScreen] = createSignal(false);
   const [currentMenu, setCurrentMenu] = createSignal('MemberInfo');
   const [showRecharge, setShowRecharge] = createSignal(false);
   const [lastRechargeTime, setLastRechargeTime] = createSignal<number | undefined>(); // 充值记录时刷新
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [member, { refetch }] = createResource(async () => {
     return getMember(searchParams.memberId);
@@ -40,7 +44,6 @@ const Index: Component = () => {
       }
     });
 
-  const navigate = useNavigate();
   const back = () => {
     if (searchParams.fromCalendarShow) {
       let path = `/appointment-show?id=${searchParams.id}`;
@@ -53,6 +56,10 @@ const Index: Component = () => {
         memberId: undefined,
       });
     }
+  };
+
+  const editMember = () => {
+    navigate(`/member-info${location.search}`);
   };
 
   const handleKeyDown = ({ key }: KeyboardEvent) => {
@@ -122,7 +129,7 @@ const Index: Component = () => {
                   <div class="flex flex-row justify-center gap-2 p-2">
                     <button
                       class="w-20 py-1 border border-slate-300 bg-white hover:border-slate-500 rounded text-black"
-                      onClick={() => navigate(`/member-info?memberId=${member()?.memberId}`)}
+                      onClick={() => editMember()}
                     >
                       编辑
                     </button>
@@ -167,6 +174,7 @@ const Index: Component = () => {
         <Recharge
           handleRechargeSuccess={() => {
             refetch();
+            props.reloadMemers();
             setLastRechargeTime(Date.now());
           }}
           hideShowRecharge={() => {

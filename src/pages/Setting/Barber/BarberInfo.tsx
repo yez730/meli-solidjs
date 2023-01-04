@@ -1,5 +1,5 @@
 import { type Component, onMount, createSignal, Show } from 'solid-js';
-import { useSearchParams, useNavigate } from '@solidjs/router';
+import { useSearchParams, useNavigate, useLocation } from '@solidjs/router';
 import { HiOutlineX } from 'solid-icons/hi';
 import toast from 'solid-toast';
 import type { NewBarber } from '../../../types';
@@ -7,6 +7,8 @@ import { getBarber, updateBarber, addBarber, deleteBarber } from '../../../utils
 import Alert from '../../../common/Alert';
 
 const BarberInfo: Component = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [showAlert, setShowAlert] = createSignal(false);
 
@@ -24,10 +26,10 @@ const BarberInfo: Component = () => {
     }
   });
 
-  const navigate = useNavigate();
-
   const back = () => {
-    navigate('/barbers');
+    const search = new URLSearchParams(location.search);
+    search.delete('barberId');
+    navigate(`/barbers?${search}`);
   };
 
   const save = async () => {
@@ -53,7 +55,9 @@ const BarberInfo: Component = () => {
       if (res.ok) {
         toast.success('修改成功');
 
-        navigate(`/barber-info?barberId=${searchParams.barberId}`);
+        const search = new URLSearchParams(location.search);
+        search.delete('barberId');
+        navigate(`/barbers?${search}`);
       } else {
         toast.error(`修改失败 ${res.msg}`);
       }

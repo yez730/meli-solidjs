@@ -9,12 +9,10 @@ const Menu: Component<{
   setIsMenuShowButInSmallScreen: (show: boolean) => void;
 }> = (props) => {
   const location = useLocation();
-
   const [allMenus, setAllMenus] = createStore(menus);
-
-  // TODO 异步
   const permissionCodes: string[] =
     JSON.parse(localStorage.getItem('identity') ?? '').permissionCodes ?? [];
+
   setAllMenus(
     (menu) =>
       !menu.path &&

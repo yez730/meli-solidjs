@@ -8,6 +8,8 @@ import type { NewMember } from '../../types';
 import Alert from '../../common/Alert';
 
 const MemberInfo: Component = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const [showAlert, setShowAlert] = createSignal(false);
   const [memberInfo, setMemberInfo] = createStore({
@@ -32,16 +34,12 @@ const MemberInfo: Component = () => {
     }
   });
 
-  const navigate = useNavigate();
-  const location = useLocation();
   const back = () => {
     if (searchParams.fromCalendarAdd) {
       // TODO location.search urlencoding
       navigate(`/appointment-add${location.search}`);
-    } else if (searchParams.memberId) {
-      navigate(`/members?memberId=${searchParams.memberId}`);
     } else {
-      navigate('/members');
+      navigate(`/members${location.search}`);
     }
   };
 
@@ -68,7 +66,7 @@ const MemberInfo: Component = () => {
       const res = await updateMember(searchParams.memberId, member);
       if (res.ok) {
         toast.success('修改成功');
-        navigate(`/members?memberId=${searchParams.memberId}`);
+        navigate(`/members${location.search}`);
       } else {
         toast.error(`修改失败 ${res.msg}`);
       }
@@ -94,13 +92,6 @@ const MemberInfo: Component = () => {
     const res = await deleteMember(searchParams.memberId);
     if (res.ok) {
       navigate('/members');
-      // TODO currentPage
-      //   router.push(`Member`,null,{
-      //     ...urlQuery,
-      //     pageIndex:0,
-      //     memberId:'',
-      //   });
-
       toast.success('删除成功');
     } else {
       toast.error(`删除失败${res.msg}`);

@@ -1,5 +1,5 @@
 import { type Component, onMount, createSignal, Show, For } from 'solid-js';
-import { useSearchParams, useNavigate } from '@solidjs/router';
+import { useSearchParams, useNavigate, useLocation } from '@solidjs/router';
 import { HiOutlineX } from 'solid-icons/hi';
 import toast from 'solid-toast';
 import type { NewServiceType } from '../../../types';
@@ -13,9 +13,10 @@ import { durationList } from '../../../utils/common';
 import Alert from '../../../common/Alert';
 
 const ServiceTypeInfo: Component = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [showAlert, setShowAlert] = createSignal(false);
-
   const [name, setName] = createSignal('');
   const [estimatedDuration, setEstimatedDuration] = createSignal<number | undefined>();
   const [normalPrize, setNormalPrize] = createSignal<number | undefined>();
@@ -32,10 +33,10 @@ const ServiceTypeInfo: Component = () => {
     }
   });
 
-  const navigate = useNavigate();
-
   const back = () => {
-    navigate('/service-types'); // TODO keep currentPage/pageSize/search
+    const search = new URLSearchParams(location.search);
+    search.delete('serviceTypeId');
+    navigate(`/service-types?${search}`);
   };
 
   const save = async () => {
@@ -81,7 +82,9 @@ const ServiceTypeInfo: Component = () => {
       if (res.ok) {
         toast.success('修改成功');
 
-        navigate(`/service-type-info?serviceTypeId=${searchParams.serviceTypeId}`);
+        const search = new URLSearchParams(location.search);
+        search.delete('serviceTypeId');
+        navigate(`/service-types?${search}`);
       } else {
         toast.error(`修改失败 ${res.msg}`);
       }

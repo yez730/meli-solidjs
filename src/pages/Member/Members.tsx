@@ -15,7 +15,7 @@ const Member: Component = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   let inputSearch: HTMLInputElement | undefined;
 
-  const [membersResult] = createResource(
+  const [membersResult, { refetch }] = createResource(
     () => [
       searchParams.currentPage,
       searchParams.search,
@@ -136,6 +136,7 @@ const Member: Component = () => {
                   <button
                     class="rounded cursor-pointer disabled:cursor-default border border-slate-300 stroke-slate-300 hover:stroke-slate-500 hover:border-slate-500"
                     onClick={() => {
+                      // setSearchParams has transition effect!
                       setSearchParams({
                         currentPage:
                           Number((searchParams.currentPage as unknown as number) ?? 0) - 1,
@@ -173,7 +174,7 @@ const Member: Component = () => {
         <Filter setShowFilter={setShowFilter} />
       </Show>
       <Show when={searchParams.memberId}>
-        <Side />
+        <Side reloadMemers={refetch} />
       </Show>
     </>
   );

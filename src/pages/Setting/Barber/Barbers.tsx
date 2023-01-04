@@ -1,10 +1,13 @@
 import { type Component, createResource, Show, For, Suspense } from 'solid-js';
-import { useSearchParams, useNavigate } from '@solidjs/router';
+import { useSearchParams, useNavigate, useLocation } from '@solidjs/router';
 import { HiOutlineX, HiOutlineSearch } from 'solid-icons/hi';
 import { getBarbers } from '../../../utils/api';
 
 const Barbers: Component = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
   let inputSearch: HTMLInputElement | undefined;
 
   const [barbersResult] = createResource(
@@ -17,8 +20,6 @@ const Barbers: Component = () => {
     },
   );
 
-  const navigate = useNavigate();
-
   const addBarber = () => {
     navigate('/barber-info');
   };
@@ -29,7 +30,13 @@ const Barbers: Component = () => {
   };
 
   const goToBarber = (barberId: string) => {
-    navigate(`/barber-info?barberId=${barberId}`);
+    let path = '/barber-info';
+    if (location.search) {
+      path += `${location.search}&barberId=${barberId}`;
+    } else {
+      path += `?barberId=${barberId}`;
+    }
+    navigate(path);
   };
 
   return (

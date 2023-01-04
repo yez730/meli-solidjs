@@ -46,7 +46,6 @@ const Index: Component = () => {
         }
         navigate(path);
       },
-      initialDate: searchParams.currentDate ?? moment().format('YYYY-MM-DDTHH:mm'),
       eventClick(eventClickInfo) {
         let path = `/appointment-show?id=${eventClickInfo.event.id}`;
         if (searchParams.barberId) {

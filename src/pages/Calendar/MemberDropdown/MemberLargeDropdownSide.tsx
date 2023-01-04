@@ -180,33 +180,31 @@ const MemberLargeDropdownSide: Component<{
           </>
         }
       >
-        <>
-          <div
-            ref={divAdd!}
-            class="flex flex-row justify-center items-center gap-2 w-full border-b pb-2"
+        <div
+          ref={divAdd!}
+          class="flex flex-row justify-center items-center gap-2 w-full border-b pb-2"
+        >
+          <HiOutlinePlusSm class="w-4 h-4 stroke-blue-500" />
+          <button
+            onClick={() => props.addMember()}
+            class="text-blue-500 text-sm hover:underline hover:underline-offset-4 "
           >
-            <HiOutlinePlusSm class="w-4 h-4 stroke-blue-500" />
-            <button
-              onClick={() => props.addMember()}
-              class="text-blue-500 text-sm hover:underline hover:underline-offset-4 "
-            >
-              添加客户
-            </button>
+            添加客户
+          </button>
+        </div>
+        <div class="grow overflow-y-hidden w-full">
+          <div
+            ref={divDropdown!}
+            onMouseDown={(e) => e.preventDefault()}
+            class="h-full overflow-y-auto w-full bg-white rounded divide-y divide-gray-100 shadow-xl"
+          >
+            <MemberDropdown
+              handleSelected={handleSelected}
+              scrollElement={divDropdown!}
+              search={search()}
+            />
           </div>
-          <div class="grow overflow-y-hidden w-full">
-            <div
-              ref={divDropdown!}
-              onMouseDown={(e) => e.preventDefault()}
-              class="h-full overflow-y-auto w-full bg-white rounded divide-y divide-gray-100 shadow-xl"
-            >
-              <MemberDropdown
-                handleSelected={handleSelected}
-                scrollElement={divDropdown!}
-                search={search()}
-              />
-            </div>
-          </div>
-        </>
+        </div>
       </Show>
     </>
   );

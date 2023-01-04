@@ -1,4 +1,12 @@
-import { type Component, createResource, Show, createSignal, For, Suspense } from 'solid-js';
+import {
+  type Component,
+  createResource,
+  Show,
+  createSignal,
+  For,
+  Suspense,
+  useTransition,
+} from 'solid-js';
 import { useNavigate, useSearchParams } from '@solidjs/router';
 import {
   HiOutlineSearch,
@@ -13,6 +21,9 @@ import Side from './Side/Index';
 const Member: Component = () => {
   const [showFilter, setShowFilter] = createSignal(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [pending, start] = useTransition();
+
   let inputSearch: HTMLInputElement | undefined;
 
   const [membersResult, { refetch }] = createResource(
@@ -174,7 +185,7 @@ const Member: Component = () => {
         <Filter setShowFilter={setShowFilter} />
       </Show>
       <Show when={searchParams.memberId}>
-        <Side reloadMemers={refetch} />
+        <Side reloadMemers={() => start(() => refetch())} />
       </Show>
     </>
   );

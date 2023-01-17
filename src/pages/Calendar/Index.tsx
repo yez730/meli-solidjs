@@ -6,7 +6,9 @@ import { Calendar, type EventSourceFuncArg } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import cnLocale from '@fullcalendar/core/locales/zh-cn';
+
 import { getAppointments, getBarbers } from '../../utils/api';
+import './Calendar.css';
 
 const Index: Component = () => {
   const [searchParams, setSearchParams] = useSearchParams();

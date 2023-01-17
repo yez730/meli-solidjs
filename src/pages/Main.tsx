@@ -37,10 +37,10 @@ const Main: Component = () => {
     });
 
   return (
-    <Show
-      when={!isMenuShowButInSmallScreen()}
-      fallback={<Menu setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen} />}
-    >
+    <>
+      <Show when={isMenuShowButInSmallScreen()}>
+        <Menu setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen} />
+      </Show>
       <div class="flex flex-row">
         <div class="hidden lg:block flex-none w-56 border-r">
           <Menu setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen} />
@@ -90,7 +90,7 @@ const Main: Component = () => {
           <Outlet />
         </div>
       </div>
-    </Show>
+    </>
   );
 };
 

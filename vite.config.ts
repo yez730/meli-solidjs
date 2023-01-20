@@ -10,9 +10,7 @@ export default defineConfig({
     target: 'esnext',
   },
   optimizeDeps: {
-    include: [
-      'tailwind.config.js',
-    ]
+    include: ['tailwind.config.js'],
   },
   resolve: {
     alias: {
@@ -22,8 +20,7 @@ export default defineConfig({
 
   plugins: [solidPlugin({ typescript: { onlyRemoveTypeImports: true } })],
   server: {
-    host:true,
+    host: true,
     port: 8080,
   },
-
 });

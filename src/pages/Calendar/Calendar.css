@@ -1,5 +1,4 @@
 .fc .fc-toolbar-title {
-  // css assets wrong order in build mode
-  // see: vitejs/vite #3924
-  font-size: 1.15em !important;
+  /* css assets wrong order in build mode. see also: vitejs/vite #3924 */
+  font-size: 0.75em !important;
 }

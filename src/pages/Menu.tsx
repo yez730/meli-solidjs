@@ -32,7 +32,7 @@ const Menu: Component<{
   };
 
   return (
-    <div class="h-screen flex flex-col relative">
+    <div class="h-screen flex flex-col w-full bg-white absolute z-10">
       <button
         class="lg:hidden block absolute left-2 top-3 hover:bg-gray-200 rounded"
         onClick={() => props.setIsMenuShowButInSmallScreen(false)}

@@ -41,8 +41,8 @@ const Main: Component = () => {
       <Show when={isMenuShowButInSmallScreen()}>
         <Menu setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen} />
       </Show>
-      <div class="flex flex-row">
-        <div class="hidden lg:block flex-none w-56 border-r">
+      <div class="flex flex-row relative">
+        <div class="hidden lg:block flex-none w-56 border-r relative">
           <Menu setIsMenuShowButInSmallScreen={setIsMenuShowButInSmallScreen} />
         </div>
         <div class="grow flex flex-col h-screen overflow-y-hidden bg-gray-100">

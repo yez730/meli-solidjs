@@ -81,7 +81,7 @@ const Index: Component<{
       <div class="fixed inset-0 z-20">
         <div class="fixed right-0 top-0 bottom-0 shadow-lg bg-white w-full lg:max-w-2xl flex flex-col">
           <div class="p-4 flex flex-row justify-between border-b">
-            <button class="hover:bg-slate-300/40" onClick={back}>
+            <button class="hover:bg-slate-300/40 p-1" onClick={back}>
               <FaSolidArrowLeftLong class="w-8 h-8 stroke-slate-800 " />
             </button>
 

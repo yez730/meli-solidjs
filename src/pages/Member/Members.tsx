@@ -83,7 +83,7 @@ const Member: Component = () => {
                   <input
                     ref={inputSearch!}
                     type="text"
-                    class="px-10 border border-slate-300 w-full rounded-3xl focus:ring-0 pr-8 focus:outline-none focus:border-slate-500 shadow-sm placeholder-slate-400"
+                    class="px-8 border border-slate-300 w-full rounded focus:ring-0 focus:outline-none focus:border-slate-500 shadow-sm placeholder-slate-400"
                     placeholder="手机/姓名"
                     value={decodeURIComponent(searchParams.search ?? '')}
                     onInput={(e) =>
@@ -94,7 +94,7 @@ const Member: Component = () => {
                     }
                   />
                   <HiOutlineSearch class="absolute left-2 top-3 h-4 w-4 stroke-slate-400" />
-                  <Show when={decodeURIComponent(searchParams.search)}>
+                  <Show when={searchParams.search}>
                     <HiOutlineX
                       class="absolute right-3 top-3 h-4 w-4 cursor-pointer"
                       onClick={closeSearch}
@@ -102,7 +102,7 @@ const Member: Component = () => {
                   </Show>
                 </div>
                 <button
-                  class="xs:w-24 w-16 py-1 text-sm xs:text-base xs:py-2 border border-slate-300 bg-white text-black  hover:border-slate-500 rounded-3xl"
+                  class="xs:w-20 w-16 py-1 text-sm xs:text-base xs:py-2 border border-slate-300 bg-white text-black  hover:border-slate-500 rounded"
                   onClick={() => setShowFilter(true)}
                 >
                   过滤器

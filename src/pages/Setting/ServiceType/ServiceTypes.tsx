@@ -76,7 +76,7 @@ const ServiceTypes: Component = () => {
                 <input
                   ref={inputSearch!}
                   type="text"
-                  class="px-10 border border-slate-300 w-full rounded-3xl focus:ring-0 pr-8 focus:outline-none focus:border-slate-500 shadow-sm placeholder-slate-400"
+                  class="px-8 border border-slate-300 w-full rounded focus:ring-0 focus:outline-none focus:border-slate-500 shadow-sm placeholder-slate-400"
                   placeholder="服务名称"
                   value={decodeURIComponent(searchParams.search ?? '')}
                   onInput={(e) =>
@@ -87,7 +87,7 @@ const ServiceTypes: Component = () => {
                   }
                 />
                 <HiOutlineSearch class="absolute left-2 top-3 h-4 w-4 stroke-slate-200" />
-                <Show when={decodeURIComponent(searchParams.search ?? '')}>
+                <Show when={searchParams.search}>
                   <HiOutlineX
                     class="absolute right-3 top-3 h-4 w-4 cursor-pointer"
                     onClick={closeSearch}

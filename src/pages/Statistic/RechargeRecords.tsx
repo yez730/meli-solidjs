@@ -55,7 +55,7 @@ const RechargeRecords: Component = () => {
                 <input
                   ref={inputSearch!}
                   type="text"
-                  class="px-10 border border-slate-300 w-full rounded-3xl focus:ring-0 pr-8 focus:outline-none focus:border-slate-500 shadow-sm placeholder-slate-400"
+                  class="px-8 border border-slate-300 w-full rounded focus:ring-0 focus:outline-none focus:border-slate-500 shadow-sm placeholder-slate-400"
                   placeholder="客户姓名/手机号"
                   value={searchParams.search ?? ''}
                   onInput={(e) =>

@@ -29,7 +29,8 @@ const Login: Component = () => {
 
   return (
     <div class="fixed inset-0 bg-black/5 z-20 flex flex-col">
-      <div class="mx-auto sm:my-auto sm:max-w-md w-full h-full overflow-y-auto sm:h-auto flex flex-col bg-white rounded gap-4 px-4 py-8">
+      <div class="relative mx-auto sm:my-auto sm:max-w-md w-full h-full overflow-y-auto sm:h-auto flex flex-col bg-white rounded gap-4 px-4 py-8">
+        <p class="absolute text-xs top-2 text-blue-600">测试账号: 13764197590 密码: 123456</p>
         <div class="flex flex-row items-center gap-2 p-2">
           <A href="/">
             <IoCutOutline size={30} />
